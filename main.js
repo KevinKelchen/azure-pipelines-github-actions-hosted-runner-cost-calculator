@@ -1,4 +1,5 @@
 const axios = require('axios').default;
+const lodash = require('lodash');
 
 // Example usage:
 // export AZURE_DEVOPS_ORG=<YOUR_ORG>
@@ -97,7 +98,7 @@ const getUsageByImage = (jobList, dateFrom, dateThrough) => {
     }
 
     // Convert from milliseconds to seconds to minutes.
-    const durationInMinutes = Math.abs(releaseTime - connectedTime) / 1000 / 60;
+    const durationInMinutes = lodash.round(Math.abs(releaseTime - connectedTime) / 1000 / 60);
 
     const currentValue = usageByImage.get(vmImage) ?? { jobCount: 0, durationInMinutes: 0 };
 
@@ -173,8 +174,8 @@ const getUsageByOSCategoryEstimatePerMonth = (usageByOSCategory, dateFrom, dateT
     // number of days per month, but it's close enough for our purposes.
     const monthsInDateRange = Math.abs(dateThrough - dateFrom) / 1000 / 60 / 60 / 24 / 30;
 
-    const durationInMinutesEstimatePerMonth = value.durationInMinutes / monthsInDateRange;
-    const costEstimatePerMonth = durationInMinutesEstimatePerMonth * costPerMinute;
+    const durationInMinutesEstimatePerMonth = lodash.round(value.durationInMinutes / monthsInDateRange);
+    const costEstimatePerMonth = lodash.round(durationInMinutesEstimatePerMonth * costPerMinute, 2);
 
     usageByOSCategoryEstimatePerMonth.set(key, { ...value, durationInMinutesEstimatePerMonth: durationInMinutesEstimatePerMonth, costPerMinute, costEstimatePerMonth: costEstimatePerMonth });
   }
@@ -193,7 +194,7 @@ const getTotalCostEstimatePerMonth = (usageByOSCategoryEstimatePerMonth) => {
     totalCostEstimatePerMonth += value.costEstimatePerMonth;
   }
 
-  return totalCostEstimatePerMonth;
+  return lodash.round(totalCostEstimatePerMonth, 2);
 };
 
 const logTotalCostEstimatePerMonth = (totalCostEstimatePerMonth) => {
