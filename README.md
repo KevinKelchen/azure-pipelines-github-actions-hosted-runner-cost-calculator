@@ -1,6 +1,6 @@
 # azure-pipelines-github-actions-hosted-runner-cost-calculator
 
-This is a script/project that was whipped together to help estimate the cost of migrating from Azure DevOps Pipelines to GitHub Actions when using hosted agents/runners.
+This is a Node.js script/project that was whipped together to help estimate the cost of migrating from Azure DevOps Pipelines to GitHub Actions when using hosted agents/runners. It uses historical data in Azure DevOps for hosted agents to inform the estimated cost of GitHub Actions hosted runners.
 
 There are things that ideally would be improved, but it is good enough for the needs of why we created it.
 
